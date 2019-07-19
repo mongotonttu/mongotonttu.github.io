@@ -1,0 +1,89 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Nooran summoniskripti</title>
+</head>
+
+<body>
+<div>
+	<label for="ac">AC:</label>
+	<input type="number" id="ac" name="ac" min="0" max="100" value="20">
+	<label for="att">Att bonus:</label>
+	<input type="number" id="att" name="att" minlength="1" maxlength="3" size="2" value="0">
+	<input type="checkbox" id="full" name="full" checked>
+	<label for="full">Full att:</label>
+	<input type="checkbox" id="flank" name="flank">
+	<label for="flank">Flank</label>
+	<input type="checkbox" id="charge" name="charge">
+	<label for="charge">Charge</label>
+</div>
+<p></p>
+<div>
+	<input type="button" id="ape" name="ape" value="ape" onclick="ape()">
+	<input type="button" id="wolf" name="wolf" value="wolf" onclick="wolf()">
+	<input type="button" id="tiger" name="tiger" value="tiger" onclick="tiger()">
+</div>
+<div>
+	<p>Dmg:</p><p id="dmg"></p><p>Grapple/trip:</p><p id="grp"></p>
+</div>
+  <script>
+	function roll(ds, d){
+		var v = 0;
+		for (i = 0; i < ds; i++){v += Math.floor(Math.random() * d) + 1;}
+		return v;
+	}
+	
+	function attack(b, ds, d, bd){
+		if (document.getElementById("charge").checked) {b += 2;}
+		if (document.getElementById("flank").checked) {b += 2;}
+		var ac = document.getElementById("ac").value * 1;
+		var att = (document.getElementById("att").value * 1) + b;
+		var r = roll(1, 20), mult = 1;
+		if (((r + att) >= ac && r > 1) || r==20){ if (r == 20 && (roll(1, 20) + att >= ac)) {mult = 2;} return mult * (roll(ds, d) + bd); mult = 1;}
+		else {return 0;}
+	}
+	
+	function ape(){
+		var dmg = 0;
+		document.getElementById("grp").innerHTML = "none";
+		dmg += attack(9, 1, 6, 9);
+		if(!document.getElementById("full").checked){
+			document.getElementById("dmg").innerHTML = dmg;
+			return;
+		}
+		dmg += attack(9, 1, 6, 9);
+		dmg += attack(4, 1, 6, 6);
+		document.getElementById("dmg").innerHTML = dmg;
+	}
+	
+	function wolf(){
+		var dmg = 0, trip = roll(1, 20) + 13;
+		document.getElementById("grp").innerHTML = "none";
+		dmg += attack(11, 1, 8, 10);
+		if (dmg > 0) {document.getElementById("grp").innerHTML = trip;}
+		document.getElementById("dmg").innerHTML = dmg;
+	}
+	
+	function tiger(){
+		var dmg = 0, grp = roll(1, 20) + 16;
+		document.getElementById("grp").innerHTML = "none";
+		dmg += attack(11, 1, 8, 10);
+		if(!document.getElementById("full").checked){
+			document.getElementById("dmg").innerHTML = dmg;
+			if (dmg > 0) {document.getElementById("grp").innerHTML = grp;}
+			return;
+		}
+		dmg += attack(11, 1, 8, 10);
+		dmg += attack(6, 2, 6, 7);
+		if (dmg > 0) {document.getElementById("grp").innerHTML = grp;}
+		if (document.getElementById("charge").checked){
+			dmg += attack(11, 1, 8, 7);
+			dmg += attack(11, 1, 8, 7);
+		}
+		document.getElementById("dmg").innerHTML = dmg;
+	}
+  </script>
+</body>
+</html>
