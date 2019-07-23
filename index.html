@@ -29,6 +29,7 @@
 </div>
 <p></p>
 <div>
+	<label>Roll: </label>
 	<input type="button" id="ape" name="ape" value="ape" onclick="ape()">
 	<input type="button" id="wolf" name="wolf" value="wolf" onclick="wolf()">
 	<input type="button" id="tiger" name="tiger" value="tiger" onclick="tiger()">
@@ -45,13 +46,13 @@
 	}
 	
 	function attack(b, ds, d, bd){
+		b += document.getElementById("att").value * 1
 		if (document.getElementById("charge").checked) {b += 2;}
 		if (document.getElementById("flank").checked) {b += 2;}
-		var ac = document.getElementById("ac").value * 1;
-		var att = (document.getElementById("att").value * 1) + b;
 		bd += document.getElementById("db").value * 1;
-		var r = roll(1, 20), r2 = roll(1, 20), r3 = roll(1, 20), mult = 1;
-		if (((r + att) >= ac && r > 1) || r==20){ if (r==20 && (r2==20 || roll(1, 20) + att >= ac)) {mult = 2;} return mult * (roll(ds, d) + bd); mult = 1;}
+		var ac = document.getElementById("ac").value * 1;
+		var r = roll(1, 20), r2 = roll(1, 20), mult = 1;
+		if (((r + b) >= ac && r > 1) || r==20){ if (r==20 && (r2==20 || roll(1, 20) + b >= ac)) {mult = 2;} return mult * (roll(ds, d) + bd); mult = 1;}
 		else {return 0;}
 	}
 	
