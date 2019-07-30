@@ -33,10 +33,15 @@
 	<input type="button" id="ape" name="ape" value="ape" onclick="ape()">
 	<input type="button" id="wolf" name="wolf" value="wolf" onclick="wolf()">
 	<input type="button" id="tiger" name="tiger" value="tiger" onclick="tiger()">
-	<input type="button" id="tiger" name="tiger" value="rakes" onclick="tiger_grapple()">
+	<input type="button" id="rakes" name="rakes" value="rakes" onclick="tiger_grapple()">
 </div>
 <div>
-	<p>Dmg:</p><p id="dmg"></p><p>Grapple/trip:</p><p id="grp"></p>
+	<input type="button" id="snake" name="snake" value="snake" onclick="snake()">
+	<input type="button" id="constrict" name="constrict" value="constrict" onclick="snake_constrict()">
+</div>
+<div>
+	<p><label>Dmg: </label><label id="dmg"></label></p>
+	<p><label>Grapple/trip: </label><label id="grp"></label></p>
 </div>
   <script>
 	function roll(ds, d){
@@ -52,7 +57,7 @@
 		bd += document.getElementById("db").value * 1;
 		var ac = document.getElementById("ac").value * 1;
 		var r = roll(1, 20), r2 = roll(1, 20), mult = 1;
-		if (((r + b) >= ac && r > 1) || r==20){ if (r==20 && (r2==20 || roll(1, 20) + b >= ac)) {mult = 2;} return mult * (roll(ds, d) + bd); mult = 1;}
+		if (((r + b) >= ac && r > 1) || r==20){ if (r==20 && (r2==20 || r2 + b >= ac)) {mult = 2;} return mult * (roll(ds, d) + bd); mult = 1;}
 		else {return 0;}
 	}
 	
@@ -103,6 +108,20 @@
 		document.getElementById("grp").innerHTML = roll(1, 20) + 16;
 		document.getElementById("dmg").innerHTML = dmg;
 	}
+	
+	function snake(){
+		var dmg = 0, grp = roll(1, 20) + 25;
+		document.getElementById("grp").innerHTML = "none";
+		dmg += attack(15, 1, 8, 14);
+		if (dmg > 0) {document.getElementById("grp").innerHTML = grp;}
+		document.getElementById("dmg").innerHTML = dmg;
+	}
+	
+	function snake_constrict(){
+		document.getElementById("grp").innerHTML = roll(1, 20) + 25;
+		document.getElementById("dmg").innerHTML = document.getElementById("db").value * 1 + roll(1, 8) + 14;
+	}
+	
   </script>
 </body>
 </html>
